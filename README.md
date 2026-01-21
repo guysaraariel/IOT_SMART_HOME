@@ -4,11 +4,17 @@
 [![Flask](https://img.shields.io/badge/Flask-3.0.0-green.svg)](https://flask.palletsprojects.com/)
 [![MongoDB](https://img.shields.io/badge/MongoDB-6.0+-green.svg)](https://www.mongodb.com/)
 [![MQTT](https://img.shields.io/badge/MQTT-Mosquitto-orange.svg)](https://mosquitto.org/)
-[![License](https://img.shields.io/badge/License-Educational-yellow.svg)](LICENSE)
+[![License](https://img.shields.io/badge/License-Educational-yellow.svg)](#-license)
 
 A complete IoT-based smart parking management system that uses simulated ultrasonic sensors to detect vehicle presence and provides real-time parking availability through an intuitive web interface.
 
-![ParkMate Demo](docs/demo-preview.png)
+## 🎬 Video Demos
+
+[![Presentation](https://img.shields.io/badge/YouTube-Presentation-red?logo=youtube)](https://www.youtube.com/watch?v=RPjkaBiDV4Q)
+[![Code Execution](https://img.shields.io/badge/YouTube-Code_Execution-red?logo=youtube)](https://www.youtube.com/watch?v=OpaqvlPZbOo)
+
+- [IoT Course | ParkMate | Presentation Recording](https://www.youtube.com/watch?v=RPjkaBiDV4Q)
+- [IoT Course | ParkMate | Code Execution Recording](https://www.youtube.com/watch?v=OpaqvlPZbOo)
 
 ## 🎯 Features
 
@@ -91,7 +97,9 @@ ParkMateApp/
     ├── EMULATORS_GUIDE.md      # Emulator documentation
     ├── ARCHITECTURE.md         # System architecture
     ├── TESTING.md              # Testing procedures
-    └── FINAL_SUMMARY.md        # Project summary
+    ├── FINAL_SUMMARY.md        # Project summary
+    ├── FEATURE_GUIDE.md        # Feature documentation
+    └── FILE_STRUCTURE.txt      # File structure reference
 ```
 
 ## 🏗️ System Architecture
@@ -140,13 +148,22 @@ The `LAUNCH_ALL` script automatically starts all 5 system components:
 
 ### Manual Controls (Button Emulator)
 
-- `1` - Toggle spot (enter SPOT001, SPOT002, etc.)
-- `2` - Mark spot OCCUPIED
-- `3` - Mark spot AVAILABLE
-- `+` - Knob clockwise
-- `-` - Knob counter-clockwise
-- `s` - Show status
-- `q` - Quit
+**Button Controls:**
+- `1` - Toggle spot occupancy (enter SPOT001, SPOT002, etc.)
+- `2` - Mark spot as OCCUPIED
+- `3` - Mark spot as AVAILABLE
+- `4` - Emergency OVERRIDE button
+
+**Knob Controls:**
+- `+` - Rotate knob clockwise (+10)
+- `-` - Rotate knob counter-clockwise (-10)
+- `r` - Reset knob to center (50%)
+- `m` - Adjust maximum parking time
+
+**System:**
+- `s` - Show current status
+- `h` - Show help menu
+- `q` - Quit emulator
 
 ## 📡 MQTT Topics
 
@@ -154,9 +171,8 @@ The `LAUNCH_ALL` script automatically starts all 5 system components:
 |-------|-----------|-------------|
 | `parkmate/spot/status` | Sensors → Backend | Parking spot status updates |
 | `parkmate/led/command` | Backend → Actuators | LED control commands |
-| `parkmate/relay/command` | Backend → Actuators | Relay control commands |
-| `parkmate/button` | Button → Backend | Button press events |
-| `parkmate/knob` | Knob → Backend | Knob rotation events |
+| `parkmate/button/press` | Button → Backend | Button press events |
+| `parkmate/knob/adjust` | Knob → Backend | Knob rotation events |
 | `parkmate/environment` | DHT → Backend | Temperature/humidity data |
 | `parkmate/alerts` | DHT → Backend | Environmental alerts |
 
@@ -168,7 +184,7 @@ The `LAUNCH_ALL` script automatically starts all 5 system components:
 - `parking_history` - Historical event log
 - `environment_data` - Temperature/humidity records
 - `button_events` - Manual control events
-- `led_states` - LED actuator states
+- `alerts` - Environmental and system alerts
 
 ## 🧪 Testing
 
@@ -189,7 +205,11 @@ mosquitto_sub -t 'parkmate/#' -v
 | `/api/lots` | GET | List all parking lots |
 | `/api/lots/<lot_id>` | GET | Get specific lot details |
 | `/api/spots?lot_id=<id>` | GET | Get parking spots |
+| `/api/spots/<spot_id>` | GET | Get specific spot details |
 | `/api/stats/<lot_id>` | GET | Get statistics |
+| `/api/environment/<lot_id>` | GET | Get environmental data |
+| `/api/alerts/<lot_id>` | GET | Get recent alerts |
+| `/api/button_events` | GET | Get recent button events |
 | `/api/lots/<lot_id>/override` | POST | Manual spot override |
 | `/api/init` | POST | Initialize sample data |
 
