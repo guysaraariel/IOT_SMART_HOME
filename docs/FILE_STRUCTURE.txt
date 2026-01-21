@@ -4,6 +4,7 @@ ParkMateApp/
 ├── 📄 config.py                     - Centralized configuration settings
 ├── 📄 requirements.txt              - Python dependencies
 ├── 🐍 app.py                        - Flask backend server + MQTT + WebSocket
+├── 📄 .gitignore                    - Git ignore rules
 │
 ├── 🚀 Launcher Scripts
 │   ├── LAUNCH_ALL.bat               - Windows one-click launcher
@@ -31,11 +32,11 @@ ParkMateApp/
 
 
 ═══════════════════════════════════════════════════════════════
-                    FILE COUNT SUMMARY
+                   FILE COUNT SUMMARY
 ═══════════════════════════════════════════════════════════════
 
-📊 Total Files: 22
-  ├─ Root:        8 files (README.md, app.py, config.py, requirements.txt,
+📊 Total Files: 21
+  ├─ Root:        7 files (README.md, app.py, config.py, requirements.txt,
   │                        .gitignore, LAUNCH_ALL.bat, LAUNCH_ALL.sh)
   ├─ emulators/:  4 files (All IoT device emulators)
   ├─ static/:     2 files (Web interfaces)
@@ -43,10 +44,10 @@ ParkMateApp/
 
 
 ═══════════════════════════════════════════════════════════════
-                    DETAILED FILE DESCRIPTIONS
+                   DETAILED FILE DESCRIPTIONS
 ═══════════════════════════════════════════════════════════════
 
-📄 ROOT DIRECTORY (8 files)
+📄 ROOT DIRECTORY (7 files)
 ───────────────────────────────────────────────────────────────
   README.md             GitHub landing page
                         - Project overview with badges
@@ -85,7 +86,7 @@ ParkMateApp/
                         - Starts all 5 components
                         - Opens browser automatically
 
-  .gitignore           Git ignore rules for Python projects
+  .gitignore            Git ignore rules for Python projects
 
 
 📁 EMULATORS/ (4 files - IoT Device Simulators)
@@ -95,28 +96,22 @@ ParkMateApp/
                         - Measures distance (occupied < 100cm)
                         - Publishes to MQTT: parkmate/spot/status
                         - Subscribes to: parkmate/led/command
-                        - Configurable spots and intervals
 
   dht_sensor_emulator.py    DHT Environmental Sensor (Data Producer)
                             - Temperature monitoring (0-40°C)
                             - Humidity monitoring (20-90%)
                             - Heat index calculation
-                            - Automatic alert generation
-                            - Publishes to MQTT: parkmate/environment
+                            - Publishes to MQTT: parkmate/environment, parkmate/alerts
 
   led_actuator.py       LED/Relay Actuator (Actuator - Receiver)
                         - Receives LED commands from backend
                         - Displays visual feedback (Red/Green/Yellow)
-                        - Simulates relay on/off states
-                        - Subscribes to: parkmate/led/command
-                        - Subscribes to: parkmate/relay/command
+                        - Subscribes to: parkmate/led/command, parkmate/relay/command
 
   button_emulator.py    Button/Knob Control (Actuator - Sender)
                         - Interactive manual control interface
                         - Toggle, Occupy, Vacate commands
-                        - Knob rotation simulation
-                        - Publishes to: parkmate/button
-                        - Publishes to: parkmate/knob
+                        - Publishes to: parkmate/button/press, parkmate/knob/adjust
 
 
 📁 STATIC/ (2 files - Web Interfaces)
@@ -133,7 +128,6 @@ ParkMateApp/
                         - Occupancy metrics
                         - Manual override controls
                         - Revenue tracking
-                        - Historical data
                         - Environmental monitoring
 
 
@@ -149,7 +143,6 @@ ParkMateApp/
                         - Fast setup instructions
                         - Component overview
                         - Interactive controls reference
-                        - Grading criteria checklist
 
   EMULATORS_GUIDE.md    Detailed emulator documentation
                         - All 4 emulator types explained
@@ -178,7 +171,6 @@ ParkMateApp/
                         - 100% requirement fulfillment
                         - Component inventory
                         - Grading criteria (30/30 points)
-                        - Demo flow
 
   FILE_STRUCTURE.txt    This file
                         - Complete file structure
@@ -186,128 +178,7 @@ ParkMateApp/
 
 
 ═══════════════════════════════════════════════════════════════
-                    QUICK START COMMANDS
-═══════════════════════════════════════════════════════════════
-
-1️⃣  Install Dependencies
-    pip install -r requirements.txt
-
-2️⃣  Launch System (EASIEST WAY)
-    Windows:    Double-click LAUNCH_ALL.bat
-    Linux/Mac:  ./LAUNCH_ALL.sh
-
-3️⃣  Access Application
-    Driver:  http://localhost:5000/
-    Owner:   http://localhost:5000/owner
-
-
-═══════════════════════════════════════════════════════════════
-                    MANUAL STARTUP (Alternative)
-═══════════════════════════════════════════════════════════════
-
-Terminal 1 - Backend:
-    python app.py
-
-Terminal 2 - Initialize Database (first time only):
-    curl -X POST http://localhost:5000/api/init
-
-Terminal 3 - Ultrasonic Sensors:
-    python emulators/sensor_emulator.py
-
-Terminal 4 - DHT Sensor:
-    python emulators/dht_sensor_emulator.py
-
-Terminal 5 - LED Actuator:
-    python emulators/led_actuator.py
-
-Terminal 6 - Button Controls:
-    python emulators/button_emulator.py
-
-
-═══════════════════════════════════════════════════════════════
-                    SYSTEM REQUIREMENTS
-═══════════════════════════════════════════════════════════════
-
-✓ Python 3.8+
-✓ MongoDB (running on localhost:27017)
-✓ Mosquitto MQTT Broker (running on localhost:1883)
-
-
-═══════════════════════════════════════════════════════════════
-                    RUNNING COMPONENTS
-═══════════════════════════════════════════════════════════════
-
-When using LAUNCH_ALL, you'll see 5 colored windows:
-
-  1. 🟡 Backend Server       - Flask + MQTT + MongoDB
-  2. 🔵 Ultrasonic Sensors   - 20 parking spot detectors
-  3. 🟣 LED/Relay Actuators  - Visual indicators (Red/Green)
-  4. 🔴 Button/Knob Controls - Interactive manual control
-  5. 🔷 DHT Sensor          - Temperature & Humidity
-
-
-═══════════════════════════════════════════════════════════════
-                    DATA FLOW OVERVIEW
-═══════════════════════════════════════════════════════════════
-
-  Emulators        MQTT          Backend         WebSocket      Clients
-  (4 types)      Broker        (app.py)                       (Web UI)
-     │               │               │                │             │
-     ├─ Publish ────>│               │                │             │
-     │   (data)      │               │                │             │
-     │               ├─ Forward ────>│                │             │
-     │               │               ├─ Process ───────────────────>│
-     │               │               │    Update                    │
-     │               │               ├─ Save to MongoDB             │
-     │               │               │                │             │
-     │<── Subscribe ─┤<── Publish ───┤                │             │
-     │   (commands)  │               │                │             │
-
-
-═══════════════════════════════════════════════════════════════
-                    MQTT TOPICS
-═══════════════════════════════════════════════════════════════
-
-📤 Published by Emulators:
-   parkmate/spot/status         (Ultrasonic sensors → Backend)
-   parkmate/environment         (DHT sensor → Backend)
-   parkmate/alerts              (DHT sensor → Backend)
-   parkmate/button              (Button emulator → Backend)
-   parkmate/knob                (Button emulator → Backend)
-
-📥 Subscribed by Emulators:
-   parkmate/led/command         (Backend → LED actuator)
-   parkmate/relay/command       (Backend → LED actuator)
-
-
-═══════════════════════════════════════════════════════════════
-                    GRADING CRITERIA - 100% COMPLETE
-═══════════════════════════════════════════════════════════════
-
-  (a) Three types of emulators           6/6   ✅
-      • 4 emulators implemented (exceeds requirement!)
-      • Data Producers: Ultrasonic, DHT
-      • Actuators: LED/Relay, Button/Knob
-
-  (b) Data manager app                   8/8   ✅
-      • Collects from MQTT broker
-      • Writes to MongoDB
-      • Processes & sends warnings
-
-  (c) Main GUI app                      10/10  ✅
-      • Driver interface
-      • Owner dashboard
-      • Real-time updates
-
-  (d) Local/Cloud DB                     3/3   ✅
-      • MongoDB (6 collections)
-      • Cloud-ready architecture
-
-  TOTAL SCORE:                          30/30  🎉
-
-
-═══════════════════════════════════════════════════════════════
-                    PROJECT INFORMATION
+                   PROJECT INFORMATION
 ═══════════════════════════════════════════════════════════════
 
 Project:  ParkMate - IoT Smart Parking Management System
@@ -316,5 +187,8 @@ Team:     Sara Banay (212254973)
           Ariel Bazarsky Jarosch (211778774)
           Guy Cohen (211883277)
 Version:  2.0 (GitHub-Ready Structure)
-Status:   ✅ Complete and GitHub-Ready
 Updated:  January 2026
+
+For launch instructions, see: HOW_TO_LAUNCH.md or QUICK_START.txt
+For system architecture, see: ARCHITECTURE.md
+For grading summary, see: FINAL_SUMMARY.md

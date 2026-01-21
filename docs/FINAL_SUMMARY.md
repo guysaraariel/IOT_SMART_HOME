@@ -13,7 +13,7 @@
 | **(a) Three types of emulators** | **6/6** | ✅ **COMPLETE** | 4 emulators implemented |
 | **(b) Data manager app** | **8/8** | ✅ **COMPLETE** | Full MQTT + MongoDB integration |
 | **(c) Main GUI app** | **10/10** | ✅ **COMPLETE** | 2 professional interfaces |
-| **(d) Local/Cloud DB** | **3/3** | ✅ **COMPLETE** | MongoDB with 6 collections |
+| **(d) Local/Cloud DB** | **3/3** | ✅ **COMPLETE** | MongoDB with 7 collections |
 
 ---
 
@@ -71,13 +71,14 @@
   - Revenue tracking
 
 ### **Database**
-- ✅ MongoDB with 6 collections:
+- ✅ MongoDB with 7 collections:
   1. `parking_lots` - Lot information and aggregates
   2. `parking_spots` - Individual spot status
   3. `parking_history` - Historical event log
-  4. `environment_data` - Temperature/humidity readings
-  5. `button_events` - Manual control events
-  6. `alerts` - Environmental warnings
+  4. `users` - User data (reserved for future use)
+  5. `environment_data` - Temperature/humidity readings
+  6. `button_events` - Manual control events
+  7. `alerts` - Environmental warnings
 
 ---
 
@@ -204,23 +205,23 @@ Double-click: LAUNCH_ALL.bat
 
 **Capabilities:**
 1. ✅ **Collects data from MQTT broker**
-   - Lines 40-48: MQTT subscription to all topics
-   - Lines 50-68: Message routing and processing
+   - MQTT subscription to all topics in `on_mqtt_connect()`
+   - Message routing and processing in `on_mqtt_message()`
 
 2. ✅ **Writes to local MongoDB database**
-   - Lines 70-96: Spot status updates
-   - Lines 129-137: Environmental data storage
-   - Lines 169-174: Button event logging
-   - Lines 270-278: Alert storage
+   - Spot status updates in `handle_spot_status()`
+   - Environmental data storage in `handle_environment_data()`
+   - Button event logging in `handle_button_press()`
+   - Alert storage in `handle_alert()`
 
 3. ✅ **Processes messages**
-   - Lines 162-250: Button press actions (toggle, occupy, free)
-   - Lines 252-261: Knob adjustment processing
-   - Lines 121-160: Environmental data processing
+   - Button press actions (toggle, occupy, free) in `handle_button_press()`
+   - Knob adjustment processing in `handle_knob_adjust()`
+   - Environmental data processing in `handle_environment_data()`
 
 4. ✅ **Sends Warning/Alarm messages**
-   - Lines 263-286: Alert broadcasting
-   - Lines 152-158: WebSocket environment updates
+   - Alert broadcasting in `handle_alert()`
+   - WebSocket environment updates via `socketio.emit()`
    - Automatic alerts from DHT sensor for extreme conditions
 
 **Points: 8/8** ✨
@@ -262,13 +263,14 @@ Double-click: LAUNCH_ALL.bat
 
 **Database:** MongoDB (`parkmate_db`)
 
-**Collections (6 total):**
+**Collections (7 total):**
 1. `parking_lots` - Lot information, stats, environmental data
 2. `parking_spots` - Individual spot status and history
 3. `parking_history` - Time-series occupancy events
-4. `environment_data` - Temperature/humidity readings
-5. `button_events` - Manual control event log
-6. `alerts` - Environmental warning log
+4. `users` - User data (reserved for future use)
+5. `environment_data` - Temperature/humidity readings
+6. `button_events` - Manual control event log
+7. `alerts` - Environmental warning log
 
 **Features:**
 - ✅ Local MongoDB instance
@@ -386,7 +388,7 @@ Double-click: LAUNCH_ALL.bat
 ### Database
 - ✅ MongoDB schema
 - ✅ Initialization script
-- ✅ 6 collections
+- ✅ 7 collections
 
 ---
 

@@ -312,7 +312,7 @@ pip install -r requirements.txt
 
 ### d. Local/Cloud DB (3 points) ✅
 - ✅ MongoDB local database
-- ✅ Multiple collections (spots, lots, history, environment, alerts)
+- ✅ Multiple collections (spots, lots, history, users, environment, button_events, alerts)
 - ✅ Cloud-ready (can migrate to MongoDB Atlas)
 
 **TOTAL: 30/30 points (100%)** 🎉

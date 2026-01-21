@@ -136,7 +136,7 @@
       • Real-time updates
 
   (d) Local/Cloud DB                     3/3   ✅
-      • MongoDB (6 collections)
+      • MongoDB (7 collections)
       • Cloud-ready
 
   TOTAL SCORE:                          30/30  🎉
