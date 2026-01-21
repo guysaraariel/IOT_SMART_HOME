@@ -358,19 +358,6 @@ Enter command:
 
 ---
 
-## 🎯 Lecturer Requirements Mapping
-
-### Requirement (a): At least 3 types of emulators (6 points)
-
-✅ **Ultrasonic Sensor** - Data Producer (distance measurements)
-✅ **DHT Sensor** - Data Producer (temperature/humidity)
-✅ **LED/Relay Actuator** - Actuator (receives and acts on commands)
-✅ **Button/Knob** - Actuator (sends control commands)
-
-**Points Earned: 6/6** ✨
-
----
-
 ## 📝 Configuration
 
 All emulators use the same MQTT broker settings defined in [config.py](../config.py):
@@ -418,6 +405,3 @@ These emulators demonstrate:
 - **Real-time Systems**: Event-driven architecture
 - **Data Flow**: End-to-end IoT pipeline
 
----
-
-**Now you have 4 complete emulator types satisfying 100% of the requirements!** 🎉
